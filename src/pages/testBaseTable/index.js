@@ -1,35 +1,40 @@
-import React from 'react';
-import BaseTable from '@components/baseTable'
+import React, {useRef} from 'react';
+import {Button} from 'antd';
+import TableList from '@components/tableList';
 import axios from 'axios';
-import Mock from 'mockjs';
 
 export default () => {
-  Mock.mock('/list', {
-    'list|1-10': [{
-        'id|+1': 1,
-        'name': 'xyj',
-        'age': 121,
-        'address': '重庆'
-    }]
-  })
-
   const columns = [
     {
-      title: '姓名',
-      dataIndex: 'name',
-      key: 'name',
+      title: '标题',
+      dataIndex: 'title',
+      search: true
     },
     {
-      title: '年龄',
-      dataIndex: 'age',
-      key: 'age',
+      title: 'sss',
+      searchIndex: 'ss',
+      search: true,
     },
     {
-      title: '住址',
-      dataIndex: 'address',
-      key: 'address',
+      title: '内容',
+      dataIndex: 'content',
+    },
+    {
+      title: '状态',
+      dataIndex: 'state',
     },
   ];
 
-  return <BaseTable columns={columns} getList={() => axios.get('/list').then((res) => ({list: res.data.list, total: res.data.list.length}))} />
+  const reloadList = useRef();
+
+  return (
+    <>
+      <TableList
+        columns={columns}
+        getList={({params}) => axios.get('https://yapi.parsec.com.cn/mock/338/mgr/bulletin-caches', {params}).then(({data: {list}}) => ({list, total: list.length}))}
+        reloadList={(relod) => reloadList.current = relod}
+      />
+      <Button onClick={() => reloadList.current()}>重新加载</Button>
+    </>
+  )
 }

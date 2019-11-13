@@ -5,6 +5,7 @@ const BaseTable = function({
   getList,
   params: params2,
   pagination,
+  reloadState,
   columns = [],
   ...props
 }) {
@@ -43,7 +44,7 @@ const BaseTable = function({
         setTotal(total);
       })
       .finally(() => setLoading(false));
-  }, [params, params2, wrappedGetList]);
+  }, [params, params2, wrappedGetList, reloadState]);
   return (
     <Table
       className={'baseTable'}
