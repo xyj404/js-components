@@ -6,10 +6,17 @@ import BaseTable from '../baseTable';
 import LinkButton from '../linkButton';
 import SearchItem, { MyCol } from './SearchItem';
 
+  // columns的类型
+    // search?: true | React.ReactElement;
+    // colProps?: ColProps;
+    // dataIndex?: keyof D;
+    // formItemProps?: FormItemProps;
+    // searchIndex?: keyof P | (keyof P)[];
+    // searchOptions?: GetFieldDecoratorOptions<P>;
 export default function({
   columns = [],
-  getList,
-  form = useForm(),
+  getList,    // ({params, pagination, filters, sorter, extra}) => Promise<{ list: D[]; total?: number }>
+  form = useForm(),  // control filter form
   extra,
   action,
   reloadList,
