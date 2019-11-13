@@ -9,7 +9,6 @@ import SearchItem, { MyCol } from './SearchItem';
 export default function({
   columns = [],
   getList,
-  blankLayoutProps,
   form = useForm(),
   extra,
   action,
@@ -183,7 +182,7 @@ export default function({
         </>
       )}
       <BaseTable
-        scroll={{ x: 1280 }}
+        scroll={{ x: 780 }}
         {...tableProps}
         columns={columns.filter(
           ({ searchIndex, title }) => !searchIndex && title
