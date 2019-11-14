@@ -66,8 +66,8 @@ export default () => {
             delete params.createdAt
           }
           return request
-            .get('/mgr/bulletin-caches', { params: { page: current, ...params } })
-            .then(({ data: { list } }) => ({ list, total: list.length }))
+          .get('/mgr/bulletin-caches', { params: { page: current, ...params } })
+          .then(({ data: { list } }) => ({ list }))
         }}
         reloadList={relod => (reloadList.current = relod)}
       />

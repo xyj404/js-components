@@ -19,6 +19,7 @@ export default function({
   extra,
   action,
   reloadList,
+  resetFilter,
   ...tableProps
 }) {
   const [expand, setExpand] = useState(false);
@@ -71,6 +72,8 @@ export default function({
           <MarginButton
             onClick={() => {
               form.resetFields();
+              console.log(resetFilter)
+              resetFilter && resetFilter();
               setListParams({});
             }}>
             重置
