@@ -6,16 +6,15 @@ import BaseTable from '../baseTable';
 import LinkButton from '../linkButton';
 import SearchItem, { MyCol } from './SearchItem';
 
-  // columns的类型
-    // search?: true | React.ReactElement;
-    // colProps?: ColProps;
-    // dataIndex?: keyof D;
-    // formItemProps?: FormItemProps;
-    // searchIndex?: keyof P | (keyof P)[];
-    // searchOptions?: GetFieldDecoratorOptions<P>;
+  // columns必填，他里面对象的类型除了antd的columns的属性外还有
+    // search?: true | React.ReactElement;          显示对应字段的过滤组件
+    // colProps?: ColProps;                         antd col组件的属性
+    // formItemProps?: FormItemProps;               每项formItem的属性
+    // searchIndex?: keyof P | (keyof P)[];         额外的字段，将其与search组合使用
+    // searchOptions?: GetFieldDecoratorOptions<P>; getFieldDecorator的配置
 export default function({
   columns = [],
-  getList,    // ({params, pagination, filters, sorter, extra}) => Promise<{ list: D[]; total?: number }>
+  getList,    // 必填，一个返回promise的方法，一般为axios请求的方法，也可以Pro({params, pagination, filters, sorter, extra}) => Promise<{ list: D[]; total?: number }>
   form = useForm(),  // control filter form
   extra,
   action,
