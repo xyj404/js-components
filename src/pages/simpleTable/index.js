@@ -49,6 +49,21 @@ export default () => {
       dataIndex: 'createdAt',
       search: <RangePicker />,
     },
+    // {
+    //   title: '时间范围',
+    //   dataIndex: 'createdAt',
+    //   search: <RangePicker />,
+    // },
+    // {
+    //   title: '时间范围',
+    //   dataIndex: 'createdAt',
+    //   search: <RangePicker />,
+    // },
+    // {
+    //   title: '时间范围',
+    //   dataIndex: 'createdAt',
+    //   search: <RangePicker />,
+    // },
   ]
 
   // 获取重新加载表格的方法

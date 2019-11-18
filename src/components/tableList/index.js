@@ -52,10 +52,10 @@ export default function({
 
   const ExpandBtns = (
     <MyCol sm={{ span: 24 }} md={{ span: 8 }}>
-      <FormItem className={'expand'}>
+      <FormItem className={'expand'} style={{marginLeft: 24}}>
         <Row
           type={'flex'}
-          justify={expand ? 'end' : 'start'}
+          // justify={'start'}
           align={'middle'}
           style={{
             lineHeight: '32px',
@@ -147,7 +147,7 @@ export default function({
             searchColumns.map(
               (_, index) =>
                 !(index % 3) &&
-                index > 2 && (
+                index > 2 && index < searchColumns.length - 3 && (
                   <Row key={index}>
                     {[...searchColumns]
                       .splice(index, 3)
@@ -175,11 +175,44 @@ export default function({
                   </Row>
                 )
             )}
-          {expand && (
-            <Row type={'flex'} justify={'end'}>
+          {expand &&
+            searchColumns.map(
+              (_, index) =>
+                !(index % 3) &&
+                index > 2 && index >= searchColumns.length - 3 && (
+                  <Row key={index} type={'flex'} justify={searchColumns.length % 3 === 0 ? 'end' : 'space-between'}>
+                    {[...searchColumns]
+                      .splice(index, 3)
+                      .map(
+                        ({
+                          colProps,
+                          title,
+                          search,
+                          dataIndex,
+                          formItemProps,
+                          searchOptions
+                        }) => (
+                          <SearchItem
+                            key={dataIndex}
+                            search={search}
+                            colProps={colProps}
+                            title={title}
+                            dataIndex={dataIndex}
+                            form={form}
+                            formItemProps={formItemProps}
+                            options={searchOptions}
+                          />
+                        )
+                      )}
+                    {ExpandBtns}
+                  </Row>
+                )
+          )}
+          {expand && searchColumns.length === 3 &&
+            <Row type={'flex'} justify={searchColumns.length % 3 === 0 ? 'end' : 'space-between'}>
               {ExpandBtns}
             </Row>
-          )}
+          }
         </Form>
       )}
       {action && <ListActions type={'flex'}>{action}</ListActions>}

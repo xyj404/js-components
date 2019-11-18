@@ -10,7 +10,7 @@ const TabPane = Tabs.TabPane
 function App() {
   return (
     <Wrap>
-      <Tabs defaultActiveKey={'2'}>
+      <Tabs defaultActiveKey={'1'}>
         <TabPane tab={'简单表格'} key={'1'}>
           <SimpleTable />
         </TabPane>
