@@ -46,24 +46,24 @@ export default () => {
     },
     {
       title: '时间范围',
-      dataIndex: 'createdAt',
+      dataIndex: 'createdAt1',
       search: <RangePicker />,
     },
-    // {
-    //   title: '时间范围',
-    //   dataIndex: 'createdAt',
-    //   search: <RangePicker />,
-    // },
-    // {
-    //   title: '时间范围',
-    //   dataIndex: 'createdAt',
-    //   search: <RangePicker />,
-    // },
-    // {
-    //   title: '时间范围',
-    //   dataIndex: 'createdAt',
-    //   search: <RangePicker />,
-    // },
+    {
+      title: '时间范围',
+      dataIndex: 'createdAt2',
+      search: <RangePicker />,
+    },
+    {
+      title: '时间范围',
+      dataIndex: 'createdAt3',
+      search: <RangePicker />,
+    },
+    {
+      title: '时间范围',
+      dataIndex: 'createdAt4',
+      search: <RangePicker />,
+    },
   ]
 
   // 获取重新加载表格的方法
@@ -85,6 +85,7 @@ export default () => {
           .then(({ data: { list } }) => ({ list }))
         }}
         reloadList={relod => (reloadList.current = relod)}
+        filterShowLine={2}
       />
       <Button onClick={() => reloadList.current()}>重新加载</Button>
     </>

@@ -25,65 +25,16 @@ export default function({
 }
 
 export const MyCol = styled(Col)`
-  && {
-    .ant-form-item {
-      margin-bottom: 24px;
-    }
-    &:nth-child(1) {
-      .ant-form-item {
-        margin-right: 24px;
-      }
-    }
-    &:nth-child(2) {
-      .ant-form-item {
-        margin-left: 24px;
-        margin-right: 24px;
-      }
-    }
-    &:nth-child(3) {
-      .ant-form-item {
-        margin-left: 24px;
-        margin-right: 0;
-      }
-    }
-    .expand.ant-form-item {
-      margin-right: 0;
-    }
-    @media (max-width: 1200px) {
-      &:nth-child(2) {
-        .ant-form-item {
-          margin-left: 12px;
+    @media (max-width: 575px) {
+        & {
+          flex-grow: 1
         }
-      }
-      &:nth-child(3) {
-        .ant-form-item {
-          margin-left: 12px;
-        }
-      }
     }
-    @media (max-width: 1000px) {
-      &:nth-child(2) {
-        .ant-form-item {
-          margin-left: 4px;
-        }
-      }
-      &:nth-child(3) {
-        .ant-form-item {
-          margin-left: 4px;
-        }
-      }
-    }
-    @media (max-width: 768px) {
-      .ant-form-item {
-        margin-right: 8px !important;
-        margin-left: 0 !important;
-      }
-    }
-  }
 `;
 const FormItem = styled(Form.Item)`
   &&& {
     display: flex;
+    margin: 0 24px 24px 0;
     .ant-form-item-control-wrapper {
       flex: 1;
     }

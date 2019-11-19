@@ -14,12 +14,13 @@ import SearchItem, { MyCol } from './SearchItem';
     // searchOptions?: GetFieldDecoratorOptions<P>; getFieldDecorator的配置
 export default function({
   columns = [],
-  getList,    // 必填，一个返回promise的方法，一般为axios请求的方法，也可以Pro({params, pagination, filters, sorter, extra}) => Promise<{ list: D[]; total?: number }>
+  getList,    // 必填，一个返回promise的方法，一般为axios请求的方法({params, pagination, filters, sorter, extra}) => Promise<{ list: D[]; total?: number }>
   form = useForm(),  // control filter form
-  extra,
-  action,
-  reloadList,
-  resetFilter,
+  extra,      // 表格上额外的东西
+  action,     // 表格上的额外的按钮
+  reloadList,  // 重新加载表格的回调
+  resetFilter,  // 清空筛选项的回调
+  filterShowLine, // 筛选项显示几行，默认不隐藏
   ...tableProps
 }) {
   const [expand, setExpand] = useState(false);
@@ -52,20 +53,15 @@ export default function({
 
   const ExpandBtns = (
     <MyCol sm={{ span: 24 }} md={{ span: 8 }}>
-      <FormItem className={'expand'} style={{marginLeft: 24}}>
+      <FormItem className={'expand'}>
         <Row
           type={'flex'}
-          // justify={'start'}
           align={'middle'}
-          style={{
-            lineHeight: '32px',
-            whiteSpace: 'nowrap'
-          }}>
+        >
           <Button
             type={'primary'}
             onClick={() => {
               setListParams(form.values);
-              // reloadList();
             }}>
             查询
           </Button>
@@ -78,7 +74,7 @@ export default function({
             }}>
             重置
           </MarginButton>
-          {searchColumns.length >= 3 && (
+          {searchColumns.length >= 3 && !!filterShowLine && (
             <LinkButton
               onClick={e => {
                 e.preventDefault();
@@ -91,6 +87,20 @@ export default function({
       </FormItem>
     </MyCol>
   );
+  console.log(filterShowLine)
+
+  const showFilterItem = (index) => {
+    filterShowLine = filterShowLine === true ? 1 : filterShowLine
+    if (filterShowLine) {
+      if (expand) {
+        return true
+      } else {
+        return index < filterShowLine * 3 - 1
+      }
+    } else {
+      return true
+    }
+  }
 
   return (
     <>
@@ -100,119 +110,27 @@ export default function({
           onSubmit={e => {
             e.preventDefault();
             setListParams(form.values);
-            // reloadList();
           }}>
-          <Row>
+          <Row
+            type={'flex'}
+            alignContent={'flex-start'}
+          >
             {searchColumns.map(
               (
-                {
-                  colProps,
-                  title,
-                  search,
-                  dataIndex,
-                  formItemProps,
-                  searchOptions
-                },
+                {...props},
                 index
               ) =>
-                index < 2 && (
-                  <SearchItem
-                    key={dataIndex}
-                    search={search}
-                    colProps={colProps}
-                    title={title}
-                    dataIndex={dataIndex}
+              (
+                showFilterItem(index) &&
+                <SearchItem
+                    key={props.dataIndex || props.searchIndex}
                     form={form}
-                    formItemProps={formItemProps}
-                    options={searchOptions}
+                    {...props}
                   />
                 )
             )}
-            {expand
-              ? searchColumns[2] && (
-                  <SearchItem
-                    key={searchColumns[2].dataIndex}
-                    search={searchColumns[2].search}
-                    colProps={searchColumns[2].colProps}
-                    title={searchColumns[2].title}
-                    dataIndex={searchColumns[2].dataIndex}
-                    formItemProps={searchColumns[2].formItemProps}
-                    form={form}
-                    options={searchColumns[2].searchOptions}
-                  />
-                )
-              : ExpandBtns}
+            {ExpandBtns}
           </Row>
-          {expand &&
-            searchColumns.map(
-              (_, index) =>
-                !(index % 3) &&
-                index > 2 && index < searchColumns.length - 3 && (
-                  <Row key={index}>
-                    {[...searchColumns]
-                      .splice(index, 3)
-                      .map(
-                        ({
-                          colProps,
-                          title,
-                          search,
-                          dataIndex,
-                          formItemProps,
-                          searchOptions
-                        }) => (
-                          <SearchItem
-                            key={dataIndex}
-                            search={search}
-                            colProps={colProps}
-                            title={title}
-                            dataIndex={dataIndex}
-                            form={form}
-                            formItemProps={formItemProps}
-                            options={searchOptions}
-                          />
-                        )
-                      )}
-                  </Row>
-                )
-            )}
-          {expand &&
-            searchColumns.map(
-              (_, index) =>
-                !(index % 3) &&
-                index > 2 && index >= searchColumns.length - 3 && (
-                  <Row key={index} type={'flex'} justify={searchColumns.length % 3 === 0 ? 'end' : 'space-between'}>
-                    {[...searchColumns]
-                      .splice(index, 3)
-                      .map(
-                        ({
-                          colProps,
-                          title,
-                          search,
-                          dataIndex,
-                          formItemProps,
-                          searchOptions
-                        }) => (
-                          <SearchItem
-                            key={dataIndex}
-                            search={search}
-                            colProps={colProps}
-                            title={title}
-                            dataIndex={dataIndex}
-                            form={form}
-                            formItemProps={formItemProps}
-                            options={searchOptions}
-                          />
-                        )
-                      )}
-                    {ExpandBtns}
-                  </Row>
-                )
-          )}
-          {expand && searchColumns.length === 3 &&
-            <Row type={'flex'} justify={searchColumns.length % 3 === 0 ? 'end' : 'space-between'}>
-              {ExpandBtns}
-            </Row>
-          }
         </Form>
       )}
       {action && <ListActions type={'flex'}>{action}</ListActions>}
@@ -238,13 +156,6 @@ export default function({
 }
 
 const FormItem = styled(Form.Item)`
-  &&& {
-    display: flex;
-    margin-bottom: 24px;
-    .ant-form-item-control-wrapper {
-      flex: 1;
-    }
-  }
 `;
 const MarginButton = styled(Button)`
   margin: 0 8px;
